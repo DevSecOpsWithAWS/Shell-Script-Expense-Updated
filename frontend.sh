@@ -61,7 +61,7 @@ VALIDATE $? "Removing existing Nginx content"
 unzip /tmp/frontend.zip
 VALIDATE $? "Unzipping frontend zip file"
 
-cp /home/ec2-user/Shell-Script-Expense-Updated/expense.conf vim /etc/nginx/default.d/expense.conf
+cp /home/ec2-user/Shell-Script-Expense-Updated/expense.conf /etc/nginx/default.d/expense.conf
 VALIDATE $? "Copying Nginx configuration file"
 
 systemctl restart nginx
