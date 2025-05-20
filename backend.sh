@@ -49,7 +49,7 @@ VALIDATE $? "NodeJS installation"
 
 id expense
 
-if [ $? -eq 0 ]
+if [ $? -ne 0 ]
 then
   useradd expense
   VALIDATE $? "User creation"
