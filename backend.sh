@@ -67,6 +67,9 @@ VALIDATE $? "Download backend zip file"
 cd /app
 VALIDATE $? "Change directory to /app"
 
+rm -rf /app/*
+VALIDATE $? "Remove temp files"
+
 unzip /tmp/backend.zip
 VALIDATE $? "Unzip backend zip file"
 
