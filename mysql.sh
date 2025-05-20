@@ -19,7 +19,7 @@ CHECK_ROOT(){
 }
 CHECK_ROOT
 
-LOGS_FOLDER="/var/logs/shell-script"
+LOGS_FOLDER="/var/logs/expense-logs"
 mkdir -p $LOGS_FOLDER
 LOG_FILE=$( echo $0 | cut -d "." -f1)
 TIMESTAMP=$(date +%Y-%m-%d_%H-%M-%S)
@@ -37,14 +37,25 @@ VALIDATE(){
 }
 
 
-dnf install mysql-server -y
+dnf install mysql-server -y &>>$LOG_FILE_NAME
 VALIDATE $? "MySQL installation"
 
-systemctl enable mysqld
+systemctl enable mysqld &>>$LOG_FILE_NAME
 VALIDATE $? "Enabling MySQL service"
 
-systemctl start mysqld
+systemctl start mysqld &>>$LOG_FILE_NAME
 VALIDATE $? "Starting MySQL service"
 
+mysql -h database.sridevsecops.store -u root -pExpenseApp@1 -e 'show databases;' &>>$LOG_FILE_NAME
+
+if [ $? -ne 0 ]
+then
+  echo "MySQL Root password is not set up" &>>$LOG_FILE_NAME
+  mysql_secure_installation --set-root-pass ExpenseApp@1
+  VALIDATE $? "MySQL Root password setup"
+else
+  echo -e "$Y MySQL Root password is already set $N"
+fi
 mysql_secure_installation --set-root-pass ExpenseApp@1
+
 
