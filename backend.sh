@@ -36,65 +36,65 @@ VALIDATE(){
   fi
 }
 
-dnf module disable nodejs -y
+dnf module disable nodejs -y &>>$LOG_FILE_NAME
 VALIDATE $? "Disable NodeJS module"
 
 
-dnf module enable nodejs:20 -y
+dnf module enable nodejs:20 -y &>>$LOG_FILE_NAME
 VALIDATE $? "Enable NodeJS module"
 
 
-dnf install nodejs -y
+dnf install nodejs -y &>>$LOG_FILE_NAME
 VALIDATE $? "NodeJS installation"
 
-id expense
+id expense &>>$LOG_FILE_NAME
 
 if [ $? -ne 0 ]
 then
-  useradd expense
+  useradd expense &>>$LOG_FILE_NAME
   VALIDATE $? "User creation"
 else
   echo "User expense Already exist"
 fi
 
 
-mkdir -p /app
+mkdir -p /app &>>$LOG_FILE_NAME
 VALIDATE $? "Create application directory"
 
-curl -o /tmp/backend.zip https://expense-builds.s3.us-east-1.amazonaws.com/expense-backend-v2.zip
+curl -o /tmp/backend.zip https://expense-builds.s3.us-east-1.amazonaws.com/expense-backend-v2.zip &>>$LOG_FILE_NAME
 VALIDATE $? "Download backend zip file"
 
-cd /app
+cd /app &>>$LOG_FILE_NAME
 VALIDATE $? "Change directory to /app"
 
-rm -rf /app/*
+rm -rf /app/* &>>$LOG_FILE_NAME
 VALIDATE $? "Remove temp files"
 
-unzip /tmp/backend.zip
+unzip /tmp/backend.zip &>>$LOG_FILE_NAME
 VALIDATE $? "Unzip backend zip file"
 
-npm install
+npm install &>>$LOG_FILE_NAME
 VALIDATE $? "Install NodeJS dependencies"
 
-cp /home/ec2-user/Shell-Script-Expense-Updated/backend.service /etc/systemd/system/backend.service
+cp /home/ec2-user/Shell-Script-Expense-Updated/backend.service /etc/systemd/system/backend.service &>>$LOG_FILE_NAME
 VALIDATE $? "Coping backend service file"
 
-systemctl daemon-reload
+systemctl daemon-reload &>>$LOG_FILE_NAME
 VALIDATE $? "Reload systemd daemon"
 
-systemctl start backend
+systemctl start backend &>>$LOG_FILE_NAME
 VALIDATE $? "Start backend service"
 
-systemctl enable backend
+systemctl enable backend &>>$LOG_FILE_NAME
 VALIDATE $? "Enable backend service"
 
 
-dnf install mysql -y
+dnf install mysql -y &>>$LOG_FILE_NAME
 VALIDATE $? "MySQL installation"
 
 
-mysql -h database.sridevsecops.store -uroot -pExpenseApp@1 < /app/schema/backend.sql
+mysql -h database.sridevsecops.store -uroot -pExpenseApp@1 < /app/schema/backend.sql &>>$LOG_FILE_NAME
 VALIDATE $? "Import backend schema"
 
-systemctl restart backend
+systemctl restart backend &>>$LOG_FILE_NAME
 VALIDATE $? "Restart backend service"
