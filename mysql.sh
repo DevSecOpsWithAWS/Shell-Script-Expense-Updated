@@ -7,12 +7,6 @@ R="\e[31m"
 G="\e[32m"
 Y="\e[33m"
 N="\e[0m"
-LOGS_FOLDER="/var/logs/shell-script"
-mkdir -p $LOGS_FOLDER
-LOG_FILE=$( echo $0 | cut -d "." -f1)
-TIMESTAMP=$(date +%Y-%m-%d_%H-%M-%S)
-LOG_FILE_NAME="$LOGS_FOLDER/$LOG_FILE-$TIMESTAMP.log"
-echo "Script Execution started at $TIMESTAMP"
 
 CHECK_ROOT(){
   if [ $USER_ID -ne 0 ]
@@ -23,8 +17,15 @@ CHECK_ROOT(){
     echo "You have root privileges"
   fi
 }
-
 CHECK_ROOT
+
+LOGS_FOLDER="/var/logs/shell-script"
+mkdir -p $LOGS_FOLDER
+LOG_FILE=$( echo $0 | cut -d "." -f1)
+TIMESTAMP=$(date +%Y-%m-%d_%H-%M-%S)
+LOG_FILE_NAME="$LOGS_FOLDER/$LOG_FILE-$TIMESTAMP.log"
+echo "Script Execution started at $TIMESTAMP"
+
 VALIDATE(){
   if [ $1 -ne 0 ]
   then 
