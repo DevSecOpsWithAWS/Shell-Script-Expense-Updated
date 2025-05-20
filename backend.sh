@@ -47,8 +47,16 @@ VALIDATE $? "Enable NodeJS module"
 dnf install nodejs -y
 VALIDATE $? "NodeJS installation"
 
-useradd expense
-VALIDATE $? "User creation"
+id expense
+
+if [ $? -eq 0 ]
+then
+  useradd expense
+  VALIDATE $? "User creation"
+else
+  echo "User expense Already exist"
+fi
+
 
 mkdir -p /app
 VALIDATE $? "Create application directory"
