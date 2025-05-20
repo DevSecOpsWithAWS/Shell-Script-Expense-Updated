@@ -56,6 +56,5 @@ then
 else
   echo -e "$Y MySQL Root password is already set $N"
 fi
-mysql_secure_installation --set-root-pass ExpenseApp@1
 
 
