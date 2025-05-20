@@ -73,8 +73,8 @@ VALIDATE $? "Unzip backend zip file"
 npm install
 VALIDATE $? "Install NodeJS dependencies"
 
-mv /home/ec2-user/Shell-Script-Expense-Updated/backend.service /etc/systemd/system/backend.service
-VALIDATE $? "Move backend service file"
+cp /home/ec2-user/Shell-Script-Expense-Updated/backend.service /etc/systemd/system/backend.service
+VALIDATE $? "Coping backend service file"
 
 systemctl daemon-reload
 VALIDATE $? "Reload systemd daemon"
